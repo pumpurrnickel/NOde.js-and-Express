@@ -1,8 +1,10 @@
 const http = require('http'); //imports Node's built in web server module
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 app.use(express.json())
+app.use(morgan('tiny'));
 
 let phonebook = [
     {
@@ -87,6 +89,16 @@ app.post('/api/persons', (request, response) => {
 
   
 })
+
+morgan.token('newPerson', (request, response) => {
+    if (request.method === 'POST'){
+        return JSON.stringify(request.body)
+    }
+    else{
+    return null
+    }
+})
+
 
 const PORT = 3001;
 app.listen(PORT);
